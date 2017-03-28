@@ -20,30 +20,27 @@
   function requestNewPokemon () {
     var url = randomPokemonURL(false)
 
-    $.get(url).then(function (result) {
-      name = result.name[0].toUpperCase() + result.name.slice(1)
-
-      var sprite = result.sprites.front_default
-      var $img = $(`<img class="hidden" src="${sprite}"/>`)
-
-      $('.pokemon').empty().append($img)
-      $('.pokemon-name').removeClass(successClasses).val('').attr('disabled', false)
-    }).catch(function (error) {
-      console.error(error)
-      alert('Oops! Something went wrong trying to get a new Pokemon. Please try again.')
-    })
+    $.get(url).then(appendPokemon).catch(handleError)
   }
 
-  function validateUserInput (inputEvent) {
-    var $name = $(inputEvent.target)
+  function appendPokemon (result) {
+    name = result.name[0].toUpperCase() + result.name.slice(1)
+
+    var sprite = result.sprites.front_default
+    var $img = $(`<img class="hidden" src="${sprite}"/>`)
+
+    $('.pokemon').empty().append($img)
+    $('.pokemon-name').removeClass(successClasses)
+      .val('').attr('disabled', false)
+  }
+
+  function validateUserInput (keyupEvent) {
+    var $name = $(keyupEvent.target)
     var correctName = $name.val().trim().toLowerCase() === name.toLowerCase()
 
     if (correctName) {
       $('.pokemon img').removeClass('hidden')
-      $name.addClass(successClasses)
-      $name.attr('disabled', true)
-    } else {
-      $name.removeClass(successClasses)
+      $name.addClass(successClasses).attr('disabled', true)
     }
   }
 
@@ -53,5 +50,10 @@
     var $name = $('.pokemon-name')
     $name.val(name)
     $name.attr('disabled', true)
+  }
+
+  function handleError (error) {
+    console.error(error)
+    alert('Oops! Something went wrong trying to get a new Pokemon. Please try again.')
   }
 })()
