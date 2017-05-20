@@ -10,3 +10,13 @@
     return `http://pokeapi.co/api/v2/pokemon/${id}/`
   }
 })()
+
+
+// $('.get-pokemon')
+//
+// $('.give-up')
+//
+// $('.pokemon-name')
+
+// click get pokemon to run function
+//
